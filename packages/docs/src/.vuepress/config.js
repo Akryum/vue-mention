@@ -1,4 +1,9 @@
 module.exports = {
+  head: [
+    ['script', {
+      src: 'https://polyfill.io/v3/polyfill.min.js?features=Object.assign',
+    }],
+  ],
   themeConfig: {
     logo: '/vue-mention.svg',
     repo: 'Akryum/vue-mention',

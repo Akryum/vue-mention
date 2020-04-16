@@ -49,6 +49,7 @@ export default {
   data () {
     return {
       key: null,
+      oldKey: null,
       searchText: null,
       caretPosition: null,
       selectedIndex: 0,
@@ -243,15 +244,15 @@ export default {
     },
 
     closeMenu () {
+      this.oldKey = this.key
       this.key = null
-      this.caretPosition = null
     },
 
     updateCaretPosition () {
       if (this.key) {
         this.caretPosition = getCaretPosition(this.input, this.keyIndex)
         this.caretPosition.top -= this.input.scrollTop
-        if (this.$refs.popper) {
+        if (this.$refs.popper && this.$refs.popper.popperInstance) {
           this.$refs.popper.popperInstance.scheduleUpdate()
         }
       }
@@ -280,24 +281,23 @@ export default {
     <slot />
 
     <VPopover
-      v-if="caretPosition"
       ref="popper"
       v-bind="$attrs"
       :placement="placement"
-      open
+      :open="!!key"
       trigger="manual"
       :auto-hide="false"
       class="popper"
       style="position:absolute;"
-      :style="{
+      :style="caretPosition ? {
         top: `${caretPosition.top}px`,
         left: `${caretPosition.left}px`,
-      }"
+      } : {}"
     >
       <div
-        :style="{
+        :style="caretPosition ? {
           height: `${caretPosition.height}px`,
-        }"
+        } : {}"
       />
 
       <template #popover>
@@ -319,7 +319,7 @@ export default {
             @mousedown="applyMention(index)"
           >
             <slot
-              :name="`item-${key}`"
+              :name="`item-${key || oldKey}`"
               :item="item"
               :index="index"
             >

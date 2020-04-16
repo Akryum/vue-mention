@@ -82,6 +82,7 @@ export default {
     :keys="['@', '#']"
     :items="items"
     offset="6"
+    insert-space
     @open="onOpen"
   >
     <textarea

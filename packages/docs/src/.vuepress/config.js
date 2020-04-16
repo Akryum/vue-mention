@@ -3,6 +3,10 @@ module.exports = {
     ['script', {
       src: 'https://polyfill.io/v3/polyfill.min.js?features=Object.assign%2CPromise%2CArray.from',
     }],
+    ['script', {
+      src: 'https://unpkg.com/shim-keyboard-event-key',
+      async: true,
+    }],
   ],
   themeConfig: {
     logo: '/vue-mention.svg',

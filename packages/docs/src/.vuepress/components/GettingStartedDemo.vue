@@ -37,7 +37,7 @@ export default {
         v-model="text"
         rows="6"
         class="input"
-        placeholder="Enter text and then type @ or # to trigger the mention"
+        placeholder="Enter text and then type @ to trigger the mention"
       />
 
       <template #item="{ item }">

@@ -1,7 +1,7 @@
 module.exports = {
   head: [
     ['script', {
-      src: 'https://polyfill.io/v3/polyfill.min.js?features=Object.assign',
+      src: 'https://polyfill.io/v3/polyfill.min.js?features=Object.assign%2CPromise',
     }],
   ],
   themeConfig: {

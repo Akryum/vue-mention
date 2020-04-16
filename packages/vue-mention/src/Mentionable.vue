@@ -149,7 +149,7 @@ export default {
           }
           e.preventDefault()
         }
-        if (e.key === 'Enter' && this.filteredItems.length > 0) {
+        if ((e.key === 'Enter' || e.key === 'Tab') && this.filteredItems.length > 0) {
           this.applyMention(this.selectedIndex)
           e.preventDefault()
         }

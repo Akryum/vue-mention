@@ -1,0 +1,81 @@
+{
+  "name": "vue-mention",
+  "description": "Mention popper for input and textarea",
+  "version": "0.1.0",
+  "author": {
+    "name": "Guillaume Chau",
+    "email": "guillaume.b.chau@gmail.com"
+  },
+  "keywords": [
+    "vue",
+    "vuejs",
+    "plugin",
+    "mention",
+    "popper"
+  ],
+  "license": "MIT",
+  "main": "dist/vue-mention.umd.js",
+  "module": "dist/vue-mention.esm.js",
+  "unpkg": "dist/vue-mention.min.js",
+  "scripts": {
+    "build": "NODE_ENV=production npm run build:browser && npm run build:es && npm run build:umd",
+    "build:browser": "rollup --config build/rollup.config.browser.js",
+    "build:es": "rollup --config build/rollup.config.es.js",
+    "build:umd": "rollup --config build/rollup.config.umd.js",
+    "prepublishOnly": "npm run lint && npm run build",
+    "dev": "cross-env NODE_ENV=development rollup --config build/rollup.config.es.js --watch",
+    "lint": "eslint --ext .js,.vue src"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Akryum/vue-mention.git",
+    "directory": "packages/vue-mention"
+  },
+  "bugs": {
+    "url": "https://github.com/Akryum/vue-mention/issues"
+  },
+  "homepage": "https://github.com/Akryum/vue-mention#readme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "textarea-caret": "^3.1.0"
+  },
+  "peerDependencies": {
+    "vue": "^2.6.0",
+    "v-tooltip": "^2.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.0",
+    "@rollup/plugin-commonjs": "^11.0.2",
+    "@rollup/plugin-node-resolve": "^7.1.1",
+    "@rollup/plugin-replace": "^2.3.1",
+    "autoprefixer": "^9.7.5",
+    "babel-eslint": "^10.1.0",
+    "clean-css": "^4.1.8",
+    "cross-env": "^7.0.2",
+    "eslint": "^6.8.0",
+    "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-html": "^6.0.0",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-promise": "^4.0.1",
+    "eslint-plugin-standard": "^4.0.0",
+    "eslint-plugin-vue": "^6.2.2",
+    "rollup": "^2.2.0",
+    "rollup-plugin-babel": "^4.4.0",
+    "rollup-plugin-css-only": "^2.0.0",
+    "rollup-plugin-css-porter": "^1.0.2",
+    "rollup-plugin-eslint": "^7.0.0",
+    "rollup-plugin-terser": "^5.3.0",
+    "rollup-plugin-vue": "^5.1.6",
+    "vue": "^2.6.11",
+    "vue-template-compiler": "^2.6.11"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
+}

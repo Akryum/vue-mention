@@ -6,8 +6,8 @@ import replace from '@rollup/plugin-replace'
 import { eslint } from 'rollup-plugin-eslint'
 import css from 'rollup-plugin-css-only'
 import autoprefixer from 'autoprefixer'
-import fs from 'fs'
-import CleanCSS from 'clean-css'
+// import fs from 'fs'
+// import CleanCSS from 'clean-css'
 
 const config = require('../package.json')
 
@@ -28,7 +28,7 @@ export default {
     }),
     css({
       output: styles => {
-        fs.writeFileSync('dist/vue-mention.css', new CleanCSS().minify(styles).styles)
+        // fs.writeFileSync('dist/vue-mention.css', new CleanCSS().minify(styles).styles)
       },
     }),
     babel({

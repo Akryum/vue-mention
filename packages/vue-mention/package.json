@@ -1,7 +1,7 @@
 {
   "name": "vue-mention",
   "description": "Mention popper for input and textarea",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": {
     "name": "Guillaume Chau",
     "email": "guillaume.b.chau@gmail.com"
@@ -42,8 +42,8 @@
     "textarea-caret": "^3.1.0"
   },
   "peerDependencies": {
-    "vue": "^2.6.0",
-    "v-tooltip": "^2.0.0"
+    "v-tooltip": "^2.0.0",
+    "vue": "^2.6.0"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",

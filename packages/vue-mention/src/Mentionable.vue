@@ -193,7 +193,6 @@ export default {
       if (index >= 0) {
         const { key, keyIndex } = this.getLastKeyBeforeCaret(index)
         const searchText = this.getLastSearchText(index, keyIndex)
-        console.log(key, keyIndex, searchText)
         if (searchText != null) {
           this.openMenu(key, keyIndex)
           this.searchText = searchText

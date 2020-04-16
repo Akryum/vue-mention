@@ -39,6 +39,11 @@ export default {
       type: Boolean,
       default: false,
     },
+
+    mapInsert: {
+      type: Function,
+      default: null,
+    },
   },
 
   data () {
@@ -254,7 +259,7 @@ export default {
 
     applyMention (itemIndex) {
       const item = this.filteredItems[itemIndex]
-      const value = (this.omitKey ? '' : this.key) + String(item.value) + (this.insertSpace ? ' ' : '')
+      const value = (this.omitKey ? '' : this.key) + String(this.mapInsert ? this.mapInsert(item, this.key) : item.value) + (this.insertSpace ? ' ' : '')
       this.setValue(this.replaceText(this.getValue(), this.searchText, value, this.keyIndex))
       this.setCaretPosition(this.keyIndex + value.length)
       this.closeMenu()

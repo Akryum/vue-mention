@@ -1,7 +1,7 @@
 module.exports = {
   head: [
     ['script', {
-      src: 'https://polyfill.io/v3/polyfill.min.js?features=Object.assign%2CPromise%2CArray.from',
+      src: 'https://polyfill.io/v3/polyfill.min.js?features=Object.assign%2CPromise%2CArray.from%2CEvent',
     }],
     ['script', {
       src: 'https://unpkg.com/shim-keyboard-event-key',

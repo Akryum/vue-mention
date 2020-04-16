@@ -1,6 +1,6 @@
 {
   "name": "vue-mention-docs",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": true,
   "scripts": {
     "dev": "vuepress dev src",
@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "v-tooltip": "^2.0.3",
-    "vue-mention": "^0.1.1"
+    "vue-mention": "^0.1.2"
   },
   "devDependencies": {
     "vuepress": "^1.4.1"

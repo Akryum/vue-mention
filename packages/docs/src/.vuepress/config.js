@@ -40,6 +40,7 @@ module.exports = {
               collapsable: false,
               children: [
                 '/guide/',
+                '/guide/async-items',
               ],
             },
           ],

@@ -1,38 +1,33 @@
 <script>
 import { Mentionable } from 'vue-mention'
 
-const users = [
-  {
-    value: 'akryum',
-    firstName: 'Guillaume',
-  },
-  {
-    value: 'posva',
-    firstName: 'Eduardo',
-  },
-  {
-    value: 'atinux',
-    firstName: 'Sébastien',
-  },
-]
-
 const issues = [
   {
     value: 123,
-    label: 'Error with foo bar',
-    searchText: 'foo bar'
+    label: 'Error with foo bar'
   },
   {
     value: 42,
-    label: 'Cannot read line',
-    searchText: 'foo bar line'
+    label: 'Cannot read line'
   },
   {
     value: 77,
-    label: 'I have a feature suggestion',
-    searchText: 'feature'
+    label: 'I have a feature suggestion'
   }
 ]
+
+function fetchIssues (searchText = null) {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      if (!searchText) {
+        resolve(issues)
+      } else {
+        const reg = new RegExp(searchText, 'i')
+        resolve(issues.filter(issue => reg.test(issue.label)))
+      }
+    }, 1000)
+  })
+}
 
 export default {
   components: {
@@ -43,13 +38,16 @@ export default {
     return {
       text: '',
       items: [],
+      loading: false,
     }
   },
 
   methods: {
-    onOpen (key) {
-      this.items = key === '@' ? users : issues
-    },
+    async loadIssues (searchText = null) {
+      this.loading = true
+      this.items = await fetchIssues(searchText)
+      this.loading = false
+    }
   },
 }
 </script>
@@ -59,31 +57,23 @@ export default {
     class="demo"
   >
     <Mentionable
-      :keys="['@', '#']"
+      :keys="['#']"
       :items="items"
       offset="6"
-      insert-space
-      @open="onOpen"
+      filtering-disabled
+      @open="loadIssues()"
+      @search="loadIssues($event)"
     >
       <textarea
         v-model="text"
         rows="6"
         class="input"
-        placeholder="Enter text and then type @ or # to trigger the mention"
+        placeholder="Enter text and then type # to trigger the mention"
       />
 
       <template #no-result>
         <div class="dim">
-          No result
-        </div>
-      </template>
-
-      <template #item-@="{ item }">
-        <div class="user">
-          {{ item.value }}
-          <span class="dim">
-            ({{ item.firstName }})
-          </span>
+          {{ loading ? 'Loading...' : 'No result' }}
         </div>
       </template>
 
@@ -120,15 +110,10 @@ export default {
   font-size: inherit;
 }
 
-.user,
 .issue {
   padding: 4px 6px;
   border-radius: 4px;
   cursor: pointer;
-}
-
-.mention-selected .user {
-  background: rgb(192, 250, 153);
 }
 
 .mention-selected .issue {

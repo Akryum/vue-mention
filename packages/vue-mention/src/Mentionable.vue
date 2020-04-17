@@ -44,6 +44,11 @@ export default {
       type: Function,
       default: null,
     },
+
+    limit: {
+      type: Number,
+      default: 8,
+    },
   },
 
   data () {
@@ -77,10 +82,14 @@ export default {
         return reg.test(text)
       })
     },
+
+    displayedItems () {
+      return this.filteredItems.slice(0, this.limit)
+    },
   },
 
   watch: {
-    filteredItems () {
+    displayedItems () {
       this.selectedIndex = 0
     },
 
@@ -148,7 +157,7 @@ export default {
       if (this.key) {
         if (e.key === 'ArrowDown') {
           this.selectedIndex++
-          if (this.selectedIndex >= this.items.length) {
+          if (this.selectedIndex >= this.displayedItems.length) {
             this.selectedIndex = 0
           }
           e.preventDefault()
@@ -156,11 +165,11 @@ export default {
         if (e.key === 'ArrowUp') {
           this.selectedIndex--
           if (this.selectedIndex < 0) {
-            this.selectedIndex = this.items.length - 1
+            this.selectedIndex = this.displayedItems.length - 1
           }
           e.preventDefault()
         }
-        if ((e.key === 'Enter' || e.key === 'Tab') && this.filteredItems.length > 0) {
+        if ((e.key === 'Enter' || e.key === 'Tab') && this.displayedItems.length > 0) {
           this.applyMention(this.selectedIndex)
           e.preventDefault()
         }
@@ -259,7 +268,7 @@ export default {
     },
 
     applyMention (itemIndex) {
-      const item = this.filteredItems[itemIndex]
+      const item = this.displayedItems[itemIndex]
       const value = (this.omitKey ? '' : this.key) + String(this.mapInsert ? this.mapInsert(item, this.key) : item.value) + (this.insertSpace ? ' ' : '')
       this.setValue(this.replaceText(this.getValue(), this.searchText, value, this.keyIndex))
       this.setCaretPosition(this.keyIndex + value.length)
@@ -301,7 +310,7 @@ export default {
       />
 
       <template #popover>
-        <div v-if="!filteredItems.length">
+        <div v-if="!displayedItems.length">
           <slot name="no-result">
             No result
           </slot>
@@ -309,7 +318,7 @@ export default {
 
         <template v-else>
           <div
-            v-for="(item, index) of filteredItems"
+            v-for="(item, index) of displayedItems"
             :key="index"
             class="mention-item"
             :class="{

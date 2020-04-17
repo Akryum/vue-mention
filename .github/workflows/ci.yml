@@ -62,3 +62,13 @@ jobs:
       run: |
         cd packages/test-e2e
         yarn run test:e2e:run
+
+    - uses: actions/upload-artifact@v1
+      with:
+        name: Cypress Videos
+        path: packages/test-e2e/tests/e2e/videos
+
+    - uses: actions/upload-artifact@v1
+      with:
+        name: Cypress Screenshots
+        path: packages/test-e2e/tests/e2e/screenshots

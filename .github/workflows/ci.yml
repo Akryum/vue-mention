@@ -36,12 +36,18 @@ jobs:
           ${{ runner.os }}-yarn-
     
     - name: Dependencies cache
-      uses: actions/cache@master
+      uses: actions/cache@v1
       with:
         path: |
           node_modules
           */*/node_modules
         key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+    
+    - name: Cypress cache
+      uses: actions/cache@v1
+      with:
+        path: /home/runner/.cache/Cypress
+        key: ${{ runner.os }}-Cypress-v1
     
     - name: Install
       run: yarn --frozen-lockfile

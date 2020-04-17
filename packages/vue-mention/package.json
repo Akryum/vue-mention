@@ -22,9 +22,10 @@
     "build:browser": "rollup --config build/rollup.config.browser.js",
     "build:es": "rollup --config build/rollup.config.es.js",
     "build:umd": "rollup --config build/rollup.config.umd.js",
-    "prepublishOnly": "npm run lint && npm run build",
+    "prepublishOnly": "npm run lint && npm run build && npm run test",
     "dev": "cross-env NODE_ENV=development rollup --config build/rollup.config.es.js --watch",
-    "lint": "eslint --ext .js,.vue src"
+    "lint": "eslint --ext .js,.vue src",
+    "test": "cd ../test-e2e && yarn run test:e2e:run"
   },
   "repository": {
     "type": "git",

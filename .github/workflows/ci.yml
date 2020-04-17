@@ -48,11 +48,17 @@ jobs:
 
     # Runs a single command using the runners shell
     - name: Lint
-      run: lerna run lint
+      run: |
+        cd packages/vue-mention
+        yarn run lint
+    
+    - name: Build vue-mention
+      run: |
+        cd packages/vue-mention
+        yarn run build
 
     # Runs a set of commands using the runners shell
     - name: E2E tests
       run: |
-        lerna run build
         cd packages/e2e
         yarn run test:e2e:run

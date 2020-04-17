@@ -73,8 +73,3 @@ jobs:
       with:
         name: Cypress Videos
         path: packages/test-e2e/tests/e2e/videos
-
-    - uses: actions/upload-artifact@v1
-      with:
-        name: Cypress Screenshots
-        path: packages/test-e2e/tests/e2e/screenshots

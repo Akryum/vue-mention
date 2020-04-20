@@ -50,6 +50,10 @@ export default {
     onOpen (key) {
       this.items = key === '@' ? users : issues
     },
+
+    onEnter () {
+      console.log('Enter pressed')
+    },
   },
 }
 </script>
@@ -57,6 +61,7 @@ export default {
 <template>
   <div
     class="demo"
+    @keyup.enter="onEnter"
   >
     <Mentionable
       :keys="['@', '#']"

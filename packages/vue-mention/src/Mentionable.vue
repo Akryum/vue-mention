@@ -131,6 +131,7 @@ export default {
       if (this.input) {
         this.input.addEventListener('input', this.onInput)
         this.input.addEventListener('keydown', this.onKeyDown)
+        this.input.addEventListener('keyup', this.onKeyUp)
         this.input.addEventListener('scroll', this.onScroll)
         this.input.addEventListener('blur', this.onBlur)
       }
@@ -140,6 +141,7 @@ export default {
       if (this.input) {
         this.input.removeEventListener('input', this.onInput)
         this.input.removeEventListener('keydown', this.onKeyDown)
+        this.input.removeEventListener('keyup', this.onKeyUp)
         this.input.removeEventListener('scroll', this.onScroll)
         this.input.removeEventListener('blur', this.onBlur)
       }
@@ -160,24 +162,37 @@ export default {
           if (this.selectedIndex >= this.displayedItems.length) {
             this.selectedIndex = 0
           }
-          e.preventDefault()
+          this.cancelEvent(e)
         }
         if (e.key === 'ArrowUp') {
           this.selectedIndex--
           if (this.selectedIndex < 0) {
             this.selectedIndex = this.displayedItems.length - 1
           }
-          e.preventDefault()
+          this.cancelEvent(e)
         }
         if ((e.key === 'Enter' || e.key === 'Tab') && this.displayedItems.length > 0) {
           this.applyMention(this.selectedIndex)
-          e.preventDefault()
+          this.cancelEvent(e)
         }
         if (e.key === 'Escape') {
           this.closeMenu()
-          e.preventDefault()
+          this.cancelEvent(e)
         }
       }
+    },
+
+    onKeyUp (e) {
+      if (this.cancelKeyUp && e.key === this.cancelKeyUp) {
+        this.cancelEvent(e)
+      }
+      this.cancelKeyUp = null
+    },
+
+    cancelEvent (e) {
+      e.preventDefault()
+      e.stopPropagation()
+      this.cancelKeyUp = e.key
     },
 
     onScroll () {

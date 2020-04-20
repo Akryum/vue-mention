@@ -2,6 +2,9 @@
 import getCaretPosition from 'textarea-caret'
 import { VPopover } from 'v-tooltip'
 
+const userAgent = typeof window !== 'undefined' ? window.navigator.userAgent : ''
+const isIe = userAgent.indexOf('MSIE ') !== -1 || userAgent.indexOf('Trident/') !== -1
+
 export default {
   components: {
     VPopover,
@@ -157,25 +160,26 @@ export default {
 
     onKeyDown (e) {
       if (this.key) {
-        if (e.key === 'ArrowDown') {
+        if (e.key === 'ArrowDown' || e.keyCode === 40) {
           this.selectedIndex++
           if (this.selectedIndex >= this.displayedItems.length) {
             this.selectedIndex = 0
           }
           this.cancelEvent(e)
         }
-        if (e.key === 'ArrowUp') {
+        if (e.key === 'ArrowUp' || e.keyCode === 38) {
           this.selectedIndex--
           if (this.selectedIndex < 0) {
             this.selectedIndex = this.displayedItems.length - 1
           }
           this.cancelEvent(e)
         }
-        if ((e.key === 'Enter' || e.key === 'Tab') && this.displayedItems.length > 0) {
+        if ((e.key === 'Enter' || e.key === 'Tab' || e.keyCode === 13 || e.keyCode === 9) &&
+          this.displayedItems.length > 0) {
           this.applyMention(this.selectedIndex)
           this.cancelEvent(e)
         }
-        if (e.key === 'Escape') {
+        if (e.key === 'Escape' || e.keyCode === 27) {
           this.closeMenu()
           this.cancelEvent(e)
         }
@@ -183,16 +187,20 @@ export default {
     },
 
     onKeyUp (e) {
-      if (this.cancelKeyUp && e.key === this.cancelKeyUp) {
+      if (this.cancelKeyUp && (e.key === this.cancelKeyUp || e.keyCode === this.cancelKeyCode)) {
         this.cancelEvent(e)
       }
       this.cancelKeyUp = null
+      // IE
+      this.cancelKeyCode = null
     },
 
     cancelEvent (e) {
       e.preventDefault()
       e.stopPropagation()
       this.cancelKeyUp = e.key
+      // IE
+      this.cancelKeyCode = e.keyCode
     },
 
     onScroll () {
@@ -219,7 +227,13 @@ export default {
     },
 
     emitInputEvent (type) {
-      const event = new Event(type)
+      let event
+      if (isIe) {
+        event = document.createEvent('Event')
+        event.initEvent(type, true, true)
+      } else {
+        event = new Event(type)
+      }
       this.input.dispatchEvent(event)
     },
 

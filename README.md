@@ -5,8 +5,8 @@
 </p>
 
 <p align="center">
-  <a href="https://www.npmjs.com/package/vuetify">
-    <img src="https://img.shields.io/npm/dm/vuetify.svg" alt="Downloads">
+  <a href="https://www.npmjs.com/package/vue-mention">
+    <img src="https://img.shields.io/npm/dm/vue-mention.svg" alt="Downloads">
   </a>
 </p>
 # vue-mention

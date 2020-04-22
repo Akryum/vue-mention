@@ -1,4 +1,5 @@
 module.exports = {
+  title: 'vue-mention',
   head: [
     ['script', {
       src: 'https://polyfill.io/v3/polyfill.min.js?features=Object.assign%2CPromise%2CArray.from%2CEvent',
@@ -7,6 +8,7 @@ module.exports = {
       src: 'https://unpkg.com/shim-keyboard-event-key',
       async: true,
     }],
+    ['link', { rel: 'icon', href: '/vue-mention.svg' }],
   ],
   themeConfig: {
     logo: '/vue-mention.svg',

@@ -1,5 +1,17 @@
-<img src="./packages/docs/src/.vuepress/public/vue-mention.svg" alt="logo" width="128">
+<p align="center">
+  <a href="https://vue-mention.netlify.app/" target="_blank">
+    <img src="./packages/docs/src/.vuepress/public/vue-mention.svg" alt="logo" width="128">
+  </a>
+</p>
 
+<p align="center">
+  <a href="https://www.npmjs.com/package/vue-mention">
+    <img src="https://img.shields.io/npm/v/vue-mention.svg" alt="Version">
+  </a>
+  <a href="https://www.npmjs.com/package/vue-mention">
+    <img src="https://img.shields.io/npm/dm/vue-mention.svg" alt="Downloads">
+  </a>
+</p>
 # vue-mention
 
 Mention popper for input and textarea

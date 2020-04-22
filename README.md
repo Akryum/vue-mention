@@ -6,6 +6,9 @@
 
 <p align="center">
   <a href="https://www.npmjs.com/package/vue-mention">
+    <img src="https://img.shields.io/npm/v/vue-mention.svg" alt="Version">
+  </a>
+  <a href="https://www.npmjs.com/package/vue-mention">
     <img src="https://img.shields.io/npm/dm/vue-mention.svg" alt="Downloads">
   </a>
 </p>

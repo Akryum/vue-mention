@@ -12,11 +12,16 @@
     <img src="https://img.shields.io/npm/dm/vue-mention.svg" alt="Downloads">
   </a>
 </p>
+
 # vue-mention
 
 Mention popper for input and textarea
 
 [Documentation](https://vue-mention.netlify.app/)
+
+## Sponsors
+
+[![sponsors logos](https://guillaume-chau.info/sponsors.png)](https://guillaume-chau.info/sponsors)
 
 ## Quick start
 

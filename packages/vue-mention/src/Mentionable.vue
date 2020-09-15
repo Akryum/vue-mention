@@ -5,6 +5,10 @@ import { VPopover } from 'v-tooltip'
 const userAgent = typeof window !== 'undefined' ? window.navigator.userAgent : ''
 const isIe = userAgent.indexOf('MSIE ') !== -1 || userAgent.indexOf('Trident/') !== -1
 
+function includeInCase (part, target) {
+  return target.toLowerCase().includes(part.toLowerCase())
+}
+
 export default {
   components: {
     VPopover,
@@ -70,19 +74,18 @@ export default {
         return this.items
       }
 
-      const reg = new RegExp(this.searchText, 'i')
       return this.items.filter(item => {
         if (item.searchText) {
-          return reg.test(item.searchText)
+          return includeInCase(this.searchText, item.searchText)
         }
         if (item.label) {
-          return reg.test(item.label)
+          return includeInCase(this.searchText, item.label)
         }
         let text = ''
         for (const key in item) {
           text += item[key]
         }
-        return reg.test(text)
+        return includeInCase(this.searchText, text)
       })
     },
 

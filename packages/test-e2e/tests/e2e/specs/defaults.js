@@ -97,4 +97,11 @@ describe('with default props', () => {
     cy.get('.input').type('@{enter}abc')
     cy.get('.preview').should('contain', '@akryumabc')
   })
+
+  it('no error with special characters', () => {
+    cy.visit('/defaults')
+    cy.get('.input').type('@\\')
+    cy.get('.popover').should('be.visible')
+      .should('contain', 'No result')
+  })
 })

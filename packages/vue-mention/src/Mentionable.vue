@@ -125,7 +125,11 @@ export default {
     getInput () {
       const [vnode] = this.$scopedSlots.default()
       if (vnode) {
-        return vnode.elm
+        if (vnode.elm.tagName === 'INPUT' || vnode.elm.tagName === 'TEXTAREA') {
+          return vnode.elm
+        } else {
+          return vnode.elm.querySelector('input') || vnode.elm.querySelector('textarea')
+        }
       }
       return null
     },

@@ -16,6 +16,6 @@ describe('open and close events', () => {
     cy.get('.close').should('not.contain', 'posva')
     cy.get('.input').clear()
     cy.get('.popover').should('not.be.visible')
-    cy.get('.close').should('contain', 'posva')
+    cy.get('.close').should('contain', '@')
   })
 })

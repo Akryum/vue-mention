@@ -18,6 +18,8 @@ export default {
         },
       ],
       searchText: null,
+      openKey: null,
+      closeKey: null,
     }
   },
 }
@@ -31,6 +33,8 @@ export default {
       :keys="['@']"
       :items="items"
       @search="searchText = $event"
+      @open="openKey = $event"
+      @close="closeKey = $event"
     >
       <textarea
         v-model="text"
@@ -40,5 +44,7 @@ export default {
     </Mentionable>
 
     <div class="search">{{ searchText }}</div>
+    <div class="open">{{ openKey }}</div>
+    <div class="close">{{ closeKey }}</div>
   </div>
 </template>

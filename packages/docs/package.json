@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "v-tooltip": "^2.0.3",
-    "vue-mention": "^0.1.7"
+    "vue-mention": "^1.0.0"
   },
   "devDependencies": {
     "vuepress": "^1.4.1"

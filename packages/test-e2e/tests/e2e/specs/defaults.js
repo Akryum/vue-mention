@@ -98,6 +98,13 @@ describe('with default props', () => {
     cy.get('.preview').should('contain', '@akryumabc')
   })
 
+  it('no error with special characters', () => {
+    cy.visit('/defaults')
+    cy.get('.input').type('@\\')
+    cy.get('.popover').should('be.visible')
+      .should('contain', 'No result')
+  })
+
   it('show suggestion when previous input is space', () => {
     cy.visit('/defaults')
     cy.get('.input').type(' @zzz')

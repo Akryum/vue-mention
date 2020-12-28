@@ -70,19 +70,22 @@ export default {
         return this.items
       }
 
-      const reg = new RegExp(this.searchText, 'i')
+      const searchText = this.searchText.toLowerCase()
+
       return this.items.filter(item => {
+        /** @type {string} */
+        let text
         if (item.searchText) {
-          return reg.test(item.searchText)
+          text = item.searchText
+        } else if (item.label) {
+          text = item.label
+        } else {
+          text = ''
+          for (const key in item) {
+            text += item[key]
+          }
         }
-        if (item.label) {
-          return reg.test(item.label)
-        }
-        let text = ''
-        for (const key in item) {
-          text += item[key]
-        }
-        return reg.test(text)
+        return text.toLowerCase().includes(searchText)
       })
     },
 

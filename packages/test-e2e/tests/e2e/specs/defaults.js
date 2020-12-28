@@ -97,4 +97,20 @@ describe('with default props', () => {
     cy.get('.input').type('@{enter}abc')
     cy.get('.preview').should('contain', '@akryumabc')
   })
+
+  it('show suggestion when previous input is space', () => {
+    cy.visit('/defaults')
+    cy.get('.input').type(' @zzz')
+    cy.get('.popover').should('be.visible')
+    cy.get('.input').type('　@zzz')
+    cy.get('.popover').should('be.visible')
+    cy.get('.input').type('\n@zzz')
+    cy.get('.popover').should('be.visible')
+  })
+
+  it('does not show suggestion when text is email address', () => {
+    cy.visit('/defaults')
+    cy.get('.input').type('aaa@zzz.com')
+    cy.get('.popover').should('not.exist')
+  })
 })

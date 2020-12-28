@@ -292,8 +292,11 @@ export default {
     },
 
     closeMenu () {
-      this.oldKey = this.key
-      this.key = null
+      if (this.key != null) {
+        this.oldKey = this.key
+        this.key = null
+        this.$emit('close', this.oldKey)
+      }
     },
 
     updateCaretPosition () {

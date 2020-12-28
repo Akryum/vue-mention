@@ -128,10 +128,10 @@ export default {
     getInput () {
       const [vnode] = this.$scopedSlots.default()
       if (vnode) {
-        if (vnode.elm.tagName === 'INPUT' || vnode.elm.tagName === 'TEXTAREA') {
+        if (vnode.elm.tagName === 'INPUT' || vnode.elm.tagName === 'TEXTAREA' || vnode.elm.isContentEditable) {
           return vnode.elm
         } else {
-          return vnode.elm.querySelector('input') || vnode.elm.querySelector('textarea')
+          return vnode.elm.querySelector('input') || vnode.elm.querySelector('textarea') || vnode.elm.querySelector('[contenteditable="true"]')
         }
       }
       return null
@@ -215,7 +215,7 @@ export default {
     },
 
     getSelectionStart () {
-      return this.input.selectionStart
+      return this.input.isContentEditable ? window.getSelection().anchorOffset : this.input.selectionStart
     },
 
     setCaretPosition (index) {
@@ -225,7 +225,7 @@ export default {
     },
 
     getValue () {
-      return this.input.value
+      return this.input.isContentEditable ? window.getSelection().anchorNode.textContent : this.input.value
     },
 
     setValue (value) {
@@ -248,7 +248,7 @@ export default {
       const index = this.getSelectionStart()
       if (index >= 0) {
         const { key, keyIndex } = this.getLastKeyBeforeCaret(index)
-        const searchText = this.getLastSearchText(index, keyIndex)
+        const searchText = this.lastSearchText = this.getLastSearchText(index, keyIndex)
         if (!(keyIndex < 1 || /\s/.test(this.getValue()[keyIndex - 1]))) {
           return false
         }
@@ -301,7 +301,17 @@ export default {
 
     updateCaretPosition () {
       if (this.key) {
-        this.caretPosition = getCaretPosition(this.input, this.keyIndex)
+        if (this.input.isContentEditable) {
+          const rect = window.getSelection().getRangeAt(0).getBoundingClientRect()
+          const inputRect = this.input.getBoundingClientRect()
+          this.caretPosition = {
+            left: rect.left - inputRect.left,
+            top: rect.top - inputRect.top,
+            height: rect.height,
+          }
+        } else {
+          this.caretPosition = getCaretPosition(this.input, this.keyIndex)
+        }
         this.caretPosition.top -= this.input.scrollTop
         if (this.$refs.popper && this.$refs.popper.popperInstance) {
           this.$refs.popper.popperInstance.scheduleUpdate()
@@ -312,8 +322,17 @@ export default {
     applyMention (itemIndex) {
       const item = this.displayedItems[itemIndex]
       const value = (this.omitKey ? '' : this.key) + String(this.mapInsert ? this.mapInsert(item, this.key) : item.value) + (this.insertSpace ? ' ' : '')
-      this.setValue(this.replaceText(this.getValue(), this.searchText, value, this.keyIndex))
-      this.setCaretPosition(this.keyIndex + value.length)
+      if (this.input.isContentEditable) {
+        const range = window.getSelection().getRangeAt(0)
+        range.setStart(range.startContainer, range.startOffset - this.key.length - (this.lastSearchText ? this.lastSearchText.length : 0))
+        range.deleteContents()
+        range.insertNode(document.createTextNode(value))
+        range.setStart(range.endContainer, range.endOffset)
+        this.emitInputEvent('input')
+      } else {
+        this.setValue(this.replaceText(this.getValue(), this.searchText, value, this.keyIndex))
+        this.setCaretPosition(this.keyIndex + value.length)
+      }
       this.$emit('apply', item, this.key)
       this.closeMenu()
     },

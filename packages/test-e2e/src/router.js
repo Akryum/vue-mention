@@ -10,6 +10,7 @@ import MapInsert from './views/MapInsert.vue'
 import Limit from './views/Limit.vue'
 import ItemSlot from './views/ItemSlot.vue'
 import WrappedInput from './views/WrappedInput.vue'
+import ContentEditable from './views/ContentEditable.vue'
 
 Vue.use(VueRouter)
 
@@ -53,6 +54,10 @@ const routes = [
   {
     path: '/wrapped-input',
     component: WrappedInput,
+  },
+  {
+    path: '/content-editable',
+    component: ContentEditable,
   },
 ]
 

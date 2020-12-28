@@ -3,7 +3,7 @@ import VueRouter from 'vue-router'
 import Home from './views/Home.vue'
 import Defaults from './views/Defaults.vue'
 import MultipleCollections from './views/MultipleCollections.vue'
-import SearchEvent from './views/SearchEvent.vue'
+import Events from './views/Events.vue'
 import InsertSpace from './views/InsertSpace.vue'
 import OmitKey from './views/OmitKey.vue'
 import MapInsert from './views/MapInsert.vue'
@@ -28,7 +28,7 @@ const routes = [
   },
   {
     path: '/search-event',
-    component: SearchEvent,
+    component: Events,
   },
   {
     path: '/insert-space',

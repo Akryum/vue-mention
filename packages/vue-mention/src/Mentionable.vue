@@ -128,7 +128,11 @@ export default {
     getInput () {
       const [vnode] = this.$scopedSlots.default()
       if (vnode) {
-        return vnode.elm
+        if (vnode.elm.tagName === 'INPUT' || vnode.elm.tagName === 'TEXTAREA') {
+          return vnode.elm
+        } else {
+          return vnode.elm.querySelector('input') || vnode.elm.querySelector('textarea')
+        }
       }
       return null
     },
@@ -245,6 +249,9 @@ export default {
       if (index >= 0) {
         const { key, keyIndex } = this.getLastKeyBeforeCaret(index)
         const searchText = this.getLastSearchText(index, keyIndex)
+        if (!(keyIndex < 1 || /\s/.test(this.getValue()[keyIndex - 1]))) {
+          return false
+        }
         if (searchText != null) {
           this.openMenu(key, keyIndex)
           this.searchText = searchText

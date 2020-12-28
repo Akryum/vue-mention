@@ -9,6 +9,7 @@ import OmitKey from './views/OmitKey.vue'
 import MapInsert from './views/MapInsert.vue'
 import Limit from './views/Limit.vue'
 import ItemSlot from './views/ItemSlot.vue'
+import WrappedInput from './views/WrappedInput.vue'
 
 Vue.use(VueRouter)
 
@@ -48,6 +49,10 @@ const routes = [
   {
     path: '/item-slot',
     component: ItemSlot,
+  },
+  {
+    path: '/wrapped-input',
+    component: WrappedInput,
   },
 ]
 

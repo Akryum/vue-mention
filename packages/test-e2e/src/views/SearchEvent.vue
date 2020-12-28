@@ -20,6 +20,7 @@ export default {
       searchText: null,
       openKey: null,
       closeKey: null,
+      applyEvent: null,
     }
   },
 }
@@ -35,6 +36,7 @@ export default {
       @search="searchText = $event"
       @open="openKey = $event"
       @close="closeKey = $event"
+      @apply="(item, key) => applyEvent = { item, key }"
     >
       <textarea
         v-model="text"
@@ -46,5 +48,6 @@ export default {
     <div class="search">{{ searchText }}</div>
     <div class="open">{{ openKey }}</div>
     <div class="close">{{ closeKey }}</div>
+    <div class="apply">value: {{ applyEvent ? applyEvent.item.value : null }} key: {{ applyEvent ? applyEvent.key : null }}</div>
   </div>
 </template>

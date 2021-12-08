@@ -49,7 +49,7 @@ export default {
     <div class="open">{{ openKey }}</div>
     <div class="close">{{ closeKey }}</div>
     <div class="apply">
-      value: {{ applyEvent ? applyEvent.item.value : null }} 
+      value: {{ applyEvent ? applyEvent.item.value : null }}
       key: {{ applyEvent ? applyEvent.key : null }}
       replacedWith: {{ applyEvent ? applyEvent.replacedWith : null }}
     </div>

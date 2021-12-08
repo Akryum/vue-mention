@@ -25,6 +25,6 @@ describe('events', () => {
     cy.get('.input').type('{downArrow}{enter}')
     cy.get('.apply').should('contain', 'value: posva')
       .should('contain', 'key: @')
-      .should('contain', 'replacedWith: posva')
+      .should('contain', 'replacedWith: @posva')
   })
 })

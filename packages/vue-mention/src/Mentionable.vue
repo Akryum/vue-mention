@@ -333,7 +333,7 @@ export default {
         this.setValue(this.replaceText(this.getValue(), this.searchText, value, this.keyIndex))
         this.setCaretPosition(this.keyIndex + value.length)
       }
-      this.$emit('apply', item, this.key)
+      this.$emit('apply', item, this.key, value)
       this.closeMenu()
     },
 

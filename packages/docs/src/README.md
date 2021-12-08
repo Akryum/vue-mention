@@ -73,6 +73,10 @@ export default {
     onOpen (key) {
       this.items = key === '@' ? users : issues
     },
+
+    onApply (item, key, replacedWith) {
+      console.log(item, `has been replaced with ${replacedWith}`)
+    }
   },
 }
 </script>
@@ -84,6 +88,7 @@ export default {
     offset="6"
     insert-space
     @open="onOpen"
+    @apply="onApply"
   >
     <textarea
       v-model="text"

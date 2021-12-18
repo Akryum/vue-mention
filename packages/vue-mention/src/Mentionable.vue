@@ -92,6 +92,10 @@ export default {
     displayedItems () {
       return this.filteredItems.slice(0, this.limit)
     },
+
+    isContentEditable () {
+      return isIe ? this.input.tagName !== 'INPUT' && this.input.tagName !== 'TEXTAREA' : this.input.isContentEditable
+    },
   },
 
   watch: {
@@ -215,7 +219,7 @@ export default {
     },
 
     getSelectionStart () {
-      return this.input.isContentEditable ? window.getSelection().anchorOffset : this.input.selectionStart
+      return this.isContentEditable ? window.getSelection().anchorOffset : this.input.selectionStart
     },
 
     setCaretPosition (index) {
@@ -225,7 +229,7 @@ export default {
     },
 
     getValue () {
-      return this.input.isContentEditable ? window.getSelection().anchorNode.textContent : this.input.value
+      return this.isContentEditable ? window.getSelection().anchorNode.textContent : this.input.value
     },
 
     setValue (value) {
@@ -301,7 +305,7 @@ export default {
 
     updateCaretPosition () {
       if (this.key) {
-        if (this.input.isContentEditable) {
+        if (this.isContentEditable) {
           const rect = window.getSelection().getRangeAt(0).getBoundingClientRect()
           const inputRect = this.input.getBoundingClientRect()
           this.caretPosition = {
@@ -322,7 +326,7 @@ export default {
     applyMention (itemIndex) {
       const item = this.displayedItems[itemIndex]
       const value = (this.omitKey ? '' : this.key) + String(this.mapInsert ? this.mapInsert(item, this.key) : item.value) + (this.insertSpace ? ' ' : '')
-      if (this.input.isContentEditable) {
+      if (this.isContentEditable) {
         const range = window.getSelection().getRangeAt(0)
         range.setStart(range.startContainer, range.startOffset - this.key.length - (this.lastSearchText ? this.lastSearchText.length : 0))
         range.deleteContents()

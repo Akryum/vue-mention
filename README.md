@@ -33,14 +33,17 @@ const users = [
   {
     value: 'akryum',
     firstName: 'Guillaume',
+    imgUrl: 'https://via.placeholder.com/25x25',
   },
   {
     value: 'posva',
     firstName: 'Eduardo',
+    imgUrl: 'https://via.placeholder.com/25x25',
   },
   {
     value: 'atinux',
     firstName: 'Sébastien',
+    imgUrl: 'https://via.placeholder.com/25x25',
   },
 ]
 

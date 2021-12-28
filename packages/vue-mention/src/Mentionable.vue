@@ -399,7 +399,8 @@ export default {
                 :item="item"
                 :index="index"
               >
-                {{ item.label || item.value }}
+                <img class="item-img" :src="item.imgUrl" v-if="item.imgUrl"/>
+                <span class="item-text">{{ item.label || item.value }}</span>
               </slot>
             </slot>
           </div>
@@ -408,3 +409,10 @@ export default {
     </VPopover>
   </div>
 </template>
+
+<style>
+  .item-img {
+    max-width: 25px;
+    margin-right: 5px;
+  }
+</style>

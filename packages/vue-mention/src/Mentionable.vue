@@ -1,13 +1,19 @@
 <script>
 import getCaretPosition from 'textarea-caret'
-import { VPopover } from 'v-tooltip'
+import { Dropdown, options } from 'v-tooltip'
+import { computed, onMounted, onUnmounted, onUpdated, ref, watch, nextTick } from 'vue'
 
-const userAgent = typeof window !== 'undefined' ? window.navigator.userAgent : ''
-const isIe = userAgent.indexOf('MSIE ') !== -1 || userAgent.indexOf('Trident/') !== -1
+options.themes.mentionable = {
+  $extend: 'dropdown',
+  placement: 'top-start',
+  modifiers: [
+    { name: 'arrow', options: { padding: 6 } },
+  ],
+}
 
 export default {
   components: {
-    VPopover,
+    VDropdown: Dropdown,
   },
 
   inheritAttrs: false,
@@ -16,11 +22,6 @@ export default {
     keys: {
       type: Array,
       required: true,
-    },
-
-    placement: {
-      type: String,
-      default: 'top-start',
     },
 
     items: {
@@ -52,27 +53,38 @@ export default {
       type: Number,
       default: 8,
     },
+
+    theme: {
+      type: String,
+      default: 'mentionable',
+    },
   },
 
-  data () {
-    return {
-      key: null,
-      oldKey: null,
-      searchText: null,
-      caretPosition: null,
-      selectedIndex: 0,
-    }
-  },
+  emits: ['search', 'open', 'close', 'apply'],
 
-  computed: {
-    filteredItems () {
-      if (!this.searchText || this.filteringDisabled) {
-        return this.items
+  setup (props, { emit, slots }) {
+    const currentKey = ref(null)
+    let currentKeyIndex
+    const oldKey = ref(null)
+
+    // Items
+
+    const searchText = ref(null)
+
+    watch(searchText, (value, oldValue) => {
+      if (value) {
+        emit('search', value, oldValue)
+      }
+    })
+
+    const filteredItems = computed(() => {
+      if (!searchText.value || props.filteringDisabled) {
+        return props.items
       }
 
-      const searchText = this.searchText.toLowerCase()
+      const finalSearchText = searchText.value.toLowerCase()
 
-      return this.items.filter(item => {
+      return props.items.filter(item => {
         /** @type {string} */
         let text
         if (item.searchText) {
@@ -85,279 +97,284 @@ export default {
             text += item[key]
           }
         }
-        return text.toLowerCase().includes(searchText)
+        return text.toLowerCase().includes(finalSearchText)
       })
-    },
+    })
 
-    displayedItems () {
-      return this.filteredItems.slice(0, this.limit)
-    },
-  },
+    const displayedItems = computed(() => filteredItems.value.slice(0, props.limit))
 
-  watch: {
-    displayedItems () {
-      this.selectedIndex = 0
-    },
+    // Selection
 
-    searchText (value, oldValue) {
-      if (value) {
-        this.$emit('search', value, oldValue)
-      }
-    },
-  },
+    const selectedIndex = ref(0)
 
-  mounted () {
-    this.input = this.getInput()
-    this.attach()
-  },
+    watch(displayedItems, () => {
+      selectedIndex.value = 0
+    }, {
+      deep: true,
+    })
 
-  updated () {
-    const input = this.getInput()
-    if (input !== this.input) {
-      this.detach()
-      this.input = input
-      this.attach()
+    // Input element management
+
+    let input
+    const el = ref(null)
+
+    function getInput () {
+      return el.value.querySelector('input') ?? el.value.querySelector('textarea') ?? el.value.querySelector('[contenteditable="true"]')
     }
-  },
 
-  beforeDestroy () {
-    this.detach()
-  },
+    onMounted(() => {
+      input = getInput()
+      attach()
+    })
 
-  methods: {
-    getInput () {
-      const [vnode] = this.$scopedSlots.default()
-      if (vnode) {
-        if (vnode.elm.tagName === 'INPUT' || vnode.elm.tagName === 'TEXTAREA' || vnode.elm.isContentEditable) {
-          return vnode.elm
-        } else {
-          return vnode.elm.querySelector('input') || vnode.elm.querySelector('textarea') || vnode.elm.querySelector('[contenteditable="true"]')
-        }
+    onUpdated(() => {
+      const newInput = getInput()
+      if (newInput !== input) {
+        detach()
+        input = newInput
+        attach()
       }
-      return null
-    },
+    })
 
-    attach () {
-      if (this.input) {
-        this.input.addEventListener('input', this.onInput)
-        this.input.addEventListener('keydown', this.onKeyDown)
-        this.input.addEventListener('keyup', this.onKeyUp)
-        this.input.addEventListener('scroll', this.onScroll)
-        this.input.addEventListener('blur', this.onBlur)
+    onUnmounted(() => {
+      detach()
+    })
+
+    // Events
+
+    function attach () {
+      if (input) {
+        input.addEventListener('input', onInput)
+        input.addEventListener('keydown', onKeyDown)
+        input.addEventListener('keyup', onKeyUp)
+        input.addEventListener('scroll', onScroll)
+        input.addEventListener('blur', onBlur)
       }
-    },
+    }
 
-    detach () {
-      if (this.input) {
-        this.input.removeEventListener('input', this.onInput)
-        this.input.removeEventListener('keydown', this.onKeyDown)
-        this.input.removeEventListener('keyup', this.onKeyUp)
-        this.input.removeEventListener('scroll', this.onScroll)
-        this.input.removeEventListener('blur', this.onBlur)
+    function detach () {
+      if (input) {
+        input.removeEventListener('input', onInput)
+        input.removeEventListener('keydown', onKeyDown)
+        input.removeEventListener('keyup', onKeyUp)
+        input.removeEventListener('scroll', onScroll)
+        input.removeEventListener('blur', onBlur)
       }
-    },
+    }
 
-    onInput () {
-      this.checkKey()
-    },
+    function onInput () {
+      checkKey()
+    }
 
-    onBlur () {
-      this.closeMenu()
-    },
+    function onBlur () {
+      closeMenu()
+    }
 
-    onKeyDown (e) {
-      if (this.key) {
-        if (e.key === 'ArrowDown' || e.keyCode === 40) {
-          this.selectedIndex++
-          if (this.selectedIndex >= this.displayedItems.length) {
-            this.selectedIndex = 0
+    function onKeyDown (e) {
+      if (currentKey.value) {
+        if (e.key === 'ArrowDown') {
+          selectedIndex.value++
+          if (selectedIndex.value >= displayedItems.value.length) {
+            selectedIndex.value = 0
           }
-          this.cancelEvent(e)
+          cancelEvent(e)
         }
-        if (e.key === 'ArrowUp' || e.keyCode === 38) {
-          this.selectedIndex--
-          if (this.selectedIndex < 0) {
-            this.selectedIndex = this.displayedItems.length - 1
+        if (e.key === 'ArrowUp') {
+          selectedIndex.value--
+          if (selectedIndex.value < 0) {
+            selectedIndex.value = displayedItems.value.length - 1
           }
-          this.cancelEvent(e)
+          cancelEvent(e)
         }
-        if ((e.key === 'Enter' || e.key === 'Tab' || e.keyCode === 13 || e.keyCode === 9) &&
-          this.displayedItems.length > 0) {
-          this.applyMention(this.selectedIndex)
-          this.cancelEvent(e)
+        if ((e.key === 'Enter' || e.key === 'Tab') &&
+          displayedItems.value.length > 0) {
+          applyMention(selectedIndex.value)
+          cancelEvent(e)
         }
-        if (e.key === 'Escape' || e.keyCode === 27) {
-          this.closeMenu()
-          this.cancelEvent(e)
+        if (e.key === 'Escape') {
+          closeMenu()
+          cancelEvent(e)
         }
       }
-    },
+    }
 
-    onKeyUp (e) {
-      if (this.cancelKeyUp && (e.key === this.cancelKeyUp || e.keyCode === this.cancelKeyCode)) {
-        this.cancelEvent(e)
+    let cancelKeyUp = null
+
+    function onKeyUp (e) {
+      if (cancelKeyUp && e.key === cancelKeyUp) {
+        cancelEvent(e)
       }
-      this.cancelKeyUp = null
-      // IE
-      this.cancelKeyCode = null
-    },
+      cancelKeyUp = null
+    }
 
-    cancelEvent (e) {
+    function cancelEvent (e) {
       e.preventDefault()
       e.stopPropagation()
-      this.cancelKeyUp = e.key
-      // IE
-      this.cancelKeyCode = e.keyCode
-    },
+      cancelKeyUp = e.key
+    }
 
-    onScroll () {
-      this.updateCaretPosition()
-    },
+    function onScroll () {
+      updateCaretPosition()
+    }
 
-    getSelectionStart () {
-      return this.input.isContentEditable ? window.getSelection().anchorOffset : this.input.selectionStart
-    },
+    function getSelectionStart () {
+      return input.isContentEditable ? window.getSelection().anchorOffset : input.selectionStart
+    }
 
-    setCaretPosition (index) {
-      this.$nextTick(() => {
-        this.input.selectionEnd = index
+    function setCaretPosition (index) {
+      nextTick(() => {
+        input.selectionEnd = index
       })
-    },
+    }
 
-    getValue () {
-      return this.input.isContentEditable ? window.getSelection().anchorNode.textContent : this.input.value
-    },
+    function getValue () {
+      return input.isContentEditable ? window.getSelection().anchorNode.textContent : input.value
+    }
 
-    setValue (value) {
-      this.input.value = value
-      this.emitInputEvent('input')
-    },
+    function setValue (value) {
+      input.value = value
+      emitInputEvent('input')
+    }
 
-    emitInputEvent (type) {
-      let event
-      if (isIe) {
-        event = document.createEvent('Event')
-        event.initEvent(type, true, true)
-      } else {
-        event = new Event(type)
-      }
-      this.input.dispatchEvent(event)
-    },
+    function emitInputEvent (type) {
+      input.dispatchEvent(new Event(type))
+    }
 
-    checkKey () {
-      const index = this.getSelectionStart()
+    let lastSearchText = null
+
+    function checkKey () {
+      const index = getSelectionStart()
       if (index >= 0) {
-        const { key, keyIndex } = this.getLastKeyBeforeCaret(index)
-        const searchText = this.lastSearchText = this.getLastSearchText(index, keyIndex)
-        if (!(keyIndex < 1 || /\s/.test(this.getValue()[keyIndex - 1]))) {
+        const { key, keyIndex } = getLastKeyBeforeCaret(index)
+        const text = lastSearchText = getLastSearchText(index, keyIndex)
+        if (!(keyIndex < 1 || /\s/.test(getValue()[keyIndex - 1]))) {
           return false
         }
-        if (searchText != null) {
-          this.openMenu(key, keyIndex)
-          this.searchText = searchText
+        if (text != null) {
+          openMenu(key, keyIndex)
+          searchText.value = text
           return true
         }
       }
-      this.closeMenu()
+      closeMenu()
       return false
-    },
+    }
 
-    getLastKeyBeforeCaret (caretIndex) {
-      const [keyData] = this.keys.map(key => ({
+    function getLastKeyBeforeCaret (caretIndex) {
+      const [keyData] = props.keys.map(key => ({
         key,
-        keyIndex: this.getValue().lastIndexOf(key, caretIndex - 1),
+        keyIndex: getValue().lastIndexOf(key, caretIndex - 1),
       })).sort((a, b) => b.keyIndex - a.keyIndex)
       return keyData
-    },
+    }
 
-    getLastSearchText (caretIndex, keyIndex) {
+    function getLastSearchText (caretIndex, keyIndex) {
       if (keyIndex !== -1) {
-        const searchText = this.getValue().substring(keyIndex + 1, caretIndex)
+        const text = getValue().substring(keyIndex + 1, caretIndex)
         // If there is a space we close the menu
-        if (!/\s/.test(searchText)) {
-          return searchText
+        if (!/\s/.test(text)) {
+          return text
         }
       }
       return null
-    },
+    }
 
-    openMenu (key, keyIndex) {
-      if (this.key !== key) {
-        this.key = key
-        this.keyIndex = keyIndex
-        this.updateCaretPosition()
-        this.selectedIndex = 0
-        this.$emit('open', key)
-      }
-    },
+    // Position of the popper
 
-    closeMenu () {
-      if (this.key != null) {
-        this.oldKey = this.key
-        this.key = null
-        this.$emit('close', this.oldKey)
-      }
-    },
+    const caretPosition = ref(null)
 
-    updateCaretPosition () {
-      if (this.key) {
-        if (this.input.isContentEditable) {
+    function updateCaretPosition () {
+      if (currentKey.value) {
+        if (input.isContentEditable) {
           const rect = window.getSelection().getRangeAt(0).getBoundingClientRect()
-          const inputRect = this.input.getBoundingClientRect()
-          this.caretPosition = {
+          const inputRect = input.getBoundingClientRect()
+          caretPosition.value = {
             left: rect.left - inputRect.left,
             top: rect.top - inputRect.top,
             height: rect.height,
           }
         } else {
-          this.caretPosition = getCaretPosition(this.input, this.keyIndex)
+          caretPosition.value = getCaretPosition(input, currentKeyIndex)
         }
-        this.caretPosition.top -= this.input.scrollTop
-        if (this.$refs.popper && this.$refs.popper.popperInstance) {
-          this.$refs.popper.popperInstance.scheduleUpdate()
+        caretPosition.value.top -= input.scrollTop
+        if (isNaN(caretPosition.value.height)) {
+          caretPosition.value.height = 10
         }
       }
-    },
+    }
 
-    applyMention (itemIndex) {
-      const item = this.displayedItems[itemIndex]
-      const value = (this.omitKey ? '' : this.key) + String(this.mapInsert ? this.mapInsert(item, this.key) : item.value) + (this.insertSpace ? ' ' : '')
-      if (this.input.isContentEditable) {
+    // Open/close
+
+    function openMenu (key, keyIndex) {
+      if (currentKey.value !== key) {
+        currentKey.value = key
+        currentKeyIndex = keyIndex
+        updateCaretPosition()
+        selectedIndex.value = 0
+        emit('open', currentKey.value)
+      }
+    }
+
+    function closeMenu () {
+      if (currentKey.value != null) {
+        oldKey.value = currentKey.value
+        currentKey.value = null
+        emit('close', oldKey.value)
+      }
+    }
+
+    // Apply
+
+    function applyMention (itemIndex) {
+      const item = displayedItems.value[itemIndex]
+      const value = (props.omitKey ? '' : currentKey.value) + String(props.mapInsert ? props.mapInsert(item, currentKey.value) : item.value) + (props.insertSpace ? ' ' : '')
+      if (input.isContentEditable) {
         const range = window.getSelection().getRangeAt(0)
-        range.setStart(range.startContainer, range.startOffset - this.key.length - (this.lastSearchText ? this.lastSearchText.length : 0))
+        range.setStart(range.startContainer, range.startOffset - currentKey.value.length - (lastSearchText ? lastSearchText.length : 0))
         range.deleteContents()
         range.insertNode(document.createTextNode(value))
         range.setStart(range.endContainer, range.endOffset)
-        this.emitInputEvent('input')
+        emitInputEvent('input')
       } else {
-        this.setValue(this.replaceText(this.getValue(), this.searchText, value, this.keyIndex))
-        this.setCaretPosition(this.keyIndex + value.length)
+        setValue(replaceText(getValue(), searchText.value, value, currentKeyIndex))
+        setCaretPosition(currentKeyIndex + value.length)
       }
-      this.$emit('apply', item, this.key, value)
-      this.closeMenu()
-    },
+      emit('apply', item, currentKey.value, value)
+      closeMenu()
+    }
 
-    replaceText (text, searchText, newText, index) {
-      return text.slice(0, index) + newText + text.slice(index + searchText.length + 1, text.length)
-    },
+    function replaceText (text, searchString, newText, index) {
+      return text.slice(0, index) + newText + text.slice(index + searchString.length + 1, text.length)
+    }
+
+    return {
+      el,
+      currentKey,
+      oldKey,
+      caretPosition,
+      displayedItems,
+      selectedIndex,
+      applyMention,
+    }
   },
 }
 </script>
 
 <template>
   <div
+    ref="el"
     class="mentionable"
     style="position:relative;"
   >
     <slot />
 
-    <VPopover
+    <VDropdown
       ref="popper"
-      v-bind="$attrs"
-      :placement="placement"
-      :open="!!key"
-      trigger="manual"
+      v-bind="{ ...$attrs, class: undefined }"
+      :shown="!!currentKey"
+      :triggers="[]"
       :auto-hide="false"
+      :theme="theme"
       class="popper"
       style="position:absolute;"
       :style="caretPosition ? {
@@ -371,40 +388,42 @@ export default {
         } : {}"
       />
 
-      <template #popover>
-        <div v-if="!displayedItems.length">
-          <slot name="no-result">
-            No result
-          </slot>
-        </div>
+      <template #popper>
+        <div :class="$attrs.class">
+          <div v-if="!displayedItems.length">
+            <slot name="no-result">
+              No result
+            </slot>
+          </div>
 
-        <template v-else>
-          <div
-            v-for="(item, index) of displayedItems"
-            :key="index"
-            class="mention-item"
-            :class="{
-              'mention-selected': selectedIndex === index,
-            }"
-            @mouseover="selectedIndex = index"
-            @mousedown="applyMention(index)"
-          >
-            <slot
-              :name="`item-${key || oldKey}`"
-              :item="item"
-              :index="index"
+          <template v-else>
+            <div
+              v-for="(item, index) of displayedItems"
+              :key="index"
+              class="mention-item"
+              :class="{
+                'mention-selected': selectedIndex === index,
+              }"
+              @mouseover="selectedIndex = index"
+              @mousedown="applyMention(index)"
             >
               <slot
-                name="item"
+                :name="`item-${currentKey || oldKey}`"
                 :item="item"
                 :index="index"
               >
-                {{ item.label || item.value }}
+                <slot
+                  name="item"
+                  :item="item"
+                  :index="index"
+                >
+                  {{ item.label || item.value }}
+                </slot>
               </slot>
-            </slot>
-          </div>
-        </template>
+            </div>
+          </template>
+        </div>
       </template>
-    </VPopover>
+    </VDropdown>
   </div>
 </template>

@@ -6,29 +6,29 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "test:e2e": "vue-cli-service test:e2e",
-    "test:e2e:run": "yarn test:e2e --headless",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "test:e2e:run": "yarn test:e2e --headless"
   },
   "dependencies": {
     "core-js": "^3.6.4",
-    "vue": "^2.6.11",
+    "v-tooltip": "^4.0.0-beta.6",
+    "vue": "^3.2.26",
     "vue-mention": "^1.0.0",
-    "vue-router": "^3.1.6"
+    "vue-router": "^4.0.12"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "~4.3.0",
-    "@vue/cli-plugin-e2e-cypress": "~4.3.0",
-    "@vue/cli-plugin-eslint": "~4.3.0",
-    "@vue/cli-plugin-router": "~4.3.0",
-    "@vue/cli-service": "~4.3.0",
-    "@vue/eslint-config-standard": "^5.1.2",
+    "@vue/cli-plugin-babel": "~4.5.15",
+    "@vue/cli-plugin-e2e-cypress": "~4.5.15",
+    "@vue/cli-plugin-eslint": "~4.5.15",
+    "@vue/cli-plugin-router": "~4.5.15",
+    "@vue/cli-service": "~4.5.15",
+    "@vue/eslint-config-standard": "^6.1.0",
     "babel-eslint": "^10.1.0",
-    "eslint": "^6.7.2",
+    "eslint": "^7.24.0",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-standard": "^4.0.0",
-    "eslint-plugin-vue": "^6.2.2",
-    "vue-template-compiler": "^2.6.11"
+    "eslint-plugin-promise": "^6.0.0",
+    "eslint-plugin-standard": "^5.0.0",
+    "eslint-plugin-vue": "^8.2.0"
   }
 }

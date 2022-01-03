@@ -29,7 +29,7 @@ export default {
     <Mentionable
       :keys="['@']"
       :items="items"
-      popover-class="defaults-mention"
+      class="defaults-mention"
     >
       <textarea
         v-model="text"

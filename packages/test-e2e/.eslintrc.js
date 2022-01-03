@@ -15,5 +15,6 @@ module.exports = {
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     // trailing comma
     'comma-dangle': ['error', 'always-multiline'],
+    'vue/multi-word-component-names': 'off',
   },
 }

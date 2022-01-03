@@ -1,9 +1,8 @@
-import babel from 'rollup-plugin-babel'
+import { babel } from '@rollup/plugin-babel'
 import resolve from '@rollup/plugin-node-resolve'
 import vue from 'rollup-plugin-vue'
 import cjs from '@rollup/plugin-commonjs'
 import replace from '@rollup/plugin-replace'
-import { eslint } from 'rollup-plugin-eslint'
 import css from 'rollup-plugin-css-only'
 import autoprefixer from 'autoprefixer'
 // import fs from 'fs'
@@ -16,9 +15,6 @@ export default {
   plugins: [
     resolve({
       mainFields: ['module', 'jsnext', 'main', 'browser'],
-    }),
-    eslint({
-      include: ['src/**/*.{js,vue}'],
     }),
     vue({
       css: false,
@@ -34,9 +30,12 @@ export default {
     babel({
       exclude: 'node_modules/**',
     }),
-    cjs(),
+    cjs({
+      include: /node_modules/,
+    }),
     replace({
       VERSION: JSON.stringify(config.version),
+      preventAssignment: true,
     }),
   ],
   watch: {

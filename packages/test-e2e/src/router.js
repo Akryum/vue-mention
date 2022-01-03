@@ -1,69 +1,54 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Home from './views/Home.vue'
-import Defaults from './views/Defaults.vue'
-import MultipleCollections from './views/MultipleCollections.vue'
-import Events from './views/Events.vue'
-import InsertSpace from './views/InsertSpace.vue'
-import OmitKey from './views/OmitKey.vue'
-import MapInsert from './views/MapInsert.vue'
-import Limit from './views/Limit.vue'
-import ItemSlot from './views/ItemSlot.vue'
-import WrappedInput from './views/WrappedInput.vue'
-import ContentEditable from './views/ContentEditable.vue'
-
-Vue.use(VueRouter)
+import { createRouter, createWebHistory } from 'vue-router'
 
 const routes = [
   {
     path: '/',
-    component: Home,
+    component: () => import('./views/Home.vue'),
   },
   {
     path: '/defaults',
-    component: Defaults,
+    component: () => import('./views/Defaults.vue'),
   },
   {
     path: '/multiple-collections',
-    component: MultipleCollections,
+    component: () => import('./views/MultipleCollections.vue'),
   },
   {
     path: '/search-event',
-    component: Events,
+    component: () => import('./views/Events.vue'),
   },
   {
     path: '/insert-space',
-    component: InsertSpace,
+    component: () => import('./views/InsertSpace.vue'),
   },
   {
     path: '/omit-key',
-    component: OmitKey,
+    component: () => import('./views/OmitKey.vue'),
   },
   {
     path: '/map-insert',
-    component: MapInsert,
+    component: () => import('./views/MapInsert.vue'),
   },
   {
     path: '/limit',
-    component: Limit,
+    component: () => import('./views/Limit.vue'),
   },
   {
     path: '/item-slot',
-    component: ItemSlot,
+    component: () => import('./views/ItemSlot.vue'),
   },
   {
     path: '/wrapped-input',
-    component: WrappedInput,
+    component: () => import('./views/WrappedInput.vue'),
   },
   {
     path: '/content-editable',
-    component: ContentEditable,
+    component: () => import('./views/ContentEditable.vue'),
   },
 ]
 
-const router = new VueRouter({
-  mode: 'history',
-  base: process.env.BASE_URL,
+const router = createRouter({
+  history: createWebHistory(process.env.BASE_URL),
   routes,
 })
 

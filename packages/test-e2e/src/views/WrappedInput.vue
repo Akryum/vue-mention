@@ -2,7 +2,7 @@
 export default {
   components: {
     WrappedTextarea: {
-      render (h) {
+      render () {
         return <div>
           <textarea class="input"/>
         </div>
@@ -10,7 +10,7 @@ export default {
     },
 
     WrappedInput: {
-      render (h) {
+      render () {
         return <div>
           <input class="input"/>
         </div>

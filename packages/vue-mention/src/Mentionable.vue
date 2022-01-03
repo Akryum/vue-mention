@@ -1,7 +1,7 @@
-<script>
+<script lang="ts">
 import getCaretPosition from 'textarea-caret'
 import { Dropdown, options } from 'v-tooltip'
-import { computed, onMounted, onUnmounted, onUpdated, ref, watch, nextTick } from 'vue'
+import { defineComponent, computed, onMounted, onUnmounted, onUpdated, ref, watch, nextTick, PropType } from 'vue'
 
 options.themes.mentionable = {
   $extend: 'dropdown',
@@ -11,7 +11,13 @@ options.themes.mentionable = {
   ],
 }
 
-export default {
+export interface MentionItem {
+  searchText?: string
+  label?: string
+  value: any
+}
+
+export default defineComponent({
   components: {
     VDropdown: Dropdown,
   },
@@ -20,12 +26,12 @@ export default {
 
   props: {
     keys: {
-      type: Array,
+      type: Array as PropType<string[]>,
       required: true,
     },
 
     items: {
-      type: Array,
+      type: Array as PropType<MentionItem[]>,
       default: () => [],
     },
 
@@ -45,7 +51,7 @@ export default {
     },
 
     mapInsert: {
-      type: Function,
+      type: Function as PropType<(item: MentionItem, key: string) => string>,
       default: null,
     },
 
@@ -67,14 +73,14 @@ export default {
 
   emits: ['search', 'open', 'close', 'apply'],
 
-  setup (props, { emit, slots }) {
-    const currentKey = ref(null)
-    let currentKeyIndex
-    const oldKey = ref(null)
+  setup (props, { emit }) {
+    const currentKey = ref<string>(null)
+    let currentKeyIndex: number
+    const oldKey = ref<string>(null)
 
     // Items
 
-    const searchText = ref(null)
+    const searchText = ref<string>(null)
 
     watch(searchText, (value, oldValue) => {
       if (value) {
@@ -90,8 +96,7 @@ export default {
       const finalSearchText = searchText.value.toLowerCase()
 
       return props.items.filter(item => {
-        /** @type {string} */
-        let text
+        let text: string
         if (item.searchText) {
           text = item.searchText
         } else if (item.label) {
@@ -120,8 +125,8 @@ export default {
 
     // Input element management
 
-    let input
-    const el = ref(null)
+    let input: HTMLElement
+    const el = ref<HTMLDivElement>(null)
 
     function getInput () {
       return el.value.querySelector('input') ?? el.value.querySelector('textarea') ?? el.value.querySelector('[contenteditable="true"]')
@@ -175,7 +180,7 @@ export default {
       closeMenu()
     }
 
-    function onKeyDown (e) {
+    function onKeyDown (e: KeyboardEvent) {
       if (currentKey.value) {
         if (e.key === 'ArrowDown') {
           selectedIndex.value++
@@ -205,14 +210,14 @@ export default {
 
     let cancelKeyUp = null
 
-    function onKeyUp (e) {
+    function onKeyUp (e: KeyboardEvent) {
       if (cancelKeyUp && e.key === cancelKeyUp) {
         cancelEvent(e)
       }
       cancelKeyUp = null
     }
 
-    function cancelEvent (e) {
+    function cancelEvent (e: KeyboardEvent) {
       e.preventDefault()
       e.stopPropagation()
       cancelKeyUp = e.key
@@ -223,29 +228,29 @@ export default {
     }
 
     function getSelectionStart () {
-      return input.isContentEditable ? window.getSelection().anchorOffset : input.selectionStart
+      return input.isContentEditable ? window.getSelection().anchorOffset : (input as HTMLInputElement).selectionStart
     }
 
-    function setCaretPosition (index) {
+    function setCaretPosition (index: number) {
       nextTick(() => {
-        input.selectionEnd = index
+        (input as HTMLInputElement).selectionEnd = index
       })
     }
 
     function getValue () {
-      return input.isContentEditable ? window.getSelection().anchorNode.textContent : input.value
+      return input.isContentEditable ? window.getSelection().anchorNode.textContent : (input as HTMLInputElement).value
     }
 
     function setValue (value) {
-      input.value = value
+      (input as HTMLInputElement).value = value
       emitInputEvent('input')
     }
 
-    function emitInputEvent (type) {
+    function emitInputEvent (type: string) {
       input.dispatchEvent(new Event(type))
     }
 
-    let lastSearchText = null
+    let lastSearchText: string = null
 
     function checkKey () {
       const index = getSelectionStart()
@@ -265,7 +270,7 @@ export default {
       return false
     }
 
-    function getLastKeyBeforeCaret (caretIndex) {
+    function getLastKeyBeforeCaret (caretIndex: number) {
       const [keyData] = props.keys.map(key => ({
         key,
         keyIndex: getValue().lastIndexOf(key, caretIndex - 1),
@@ -273,7 +278,7 @@ export default {
       return keyData
     }
 
-    function getLastSearchText (caretIndex, keyIndex) {
+    function getLastSearchText (caretIndex: number, keyIndex: number) {
       if (keyIndex !== -1) {
         const text = getValue().substring(keyIndex + 1, caretIndex)
         // If there is a space we close the menu
@@ -286,7 +291,7 @@ export default {
 
     // Position of the popper
 
-    const caretPosition = ref(null)
+    const caretPosition = ref<{ top: number, left: number, height: number }>(null)
 
     function updateCaretPosition () {
       if (currentKey.value) {
@@ -312,7 +317,7 @@ export default {
 
     // Open/close
 
-    function openMenu (key, keyIndex) {
+    function openMenu (key: string, keyIndex: number) {
       if (currentKey.value !== key) {
         currentKey.value = key
         currentKeyIndex = keyIndex
@@ -332,7 +337,7 @@ export default {
 
     // Apply
 
-    function applyMention (itemIndex) {
+    function applyMention (itemIndex: number) {
       const item = displayedItems.value[itemIndex]
       const value = (props.omitKey ? '' : currentKey.value) + String(props.mapInsert ? props.mapInsert(item, currentKey.value) : item.value) + (props.insertSpace ? ' ' : '')
       if (input.isContentEditable) {
@@ -350,7 +355,7 @@ export default {
       closeMenu()
     }
 
-    function replaceText (text, searchString, newText, index) {
+    function replaceText (text: string, searchString: string, newText: string, index: number) {
       return text.slice(0, index) + newText + text.slice(index + searchString.length + 1, text.length)
     }
 
@@ -364,7 +369,7 @@ export default {
       applyMention,
     }
   },
-}
+})
 </script>
 
 <template>

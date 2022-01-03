@@ -58,6 +58,11 @@ export default {
       type: String,
       default: 'mentionable',
     },
+
+    caretHeight: {
+      type: Number,
+      default: 0,
+    },
   },
 
   emits: ['search', 'open', 'close', 'apply'],
@@ -297,8 +302,10 @@ export default {
           caretPosition.value = getCaretPosition(input, currentKeyIndex)
         }
         caretPosition.value.top -= input.scrollTop
-        if (isNaN(caretPosition.value.height)) {
-          caretPosition.value.height = 10
+        if (props.caretHeight) {
+          caretPosition.value.height = props.caretHeight
+        } else if (isNaN(caretPosition.value.height)) {
+          caretPosition.value.height = 16
         }
       }
     }

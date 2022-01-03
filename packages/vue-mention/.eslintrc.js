@@ -1,32 +1,53 @@
 module.exports = {
   root: true,
-  parserOptions: {
-    parser: 'babel-eslint',
-    ecmaVersion: 2017,
-    sourceType: 'module',
-  },
-  // https://github.com/feross/standard/blob/master/RULES.md#javascript-standard-style
-  extends: [
-    'standard',
-    'plugin:vue/recommended',
-  ],
-  // required to lint *.vue files
-  plugins: [
-    'vue',
-  ],
   env: {
     browser: true,
   },
-  // add your custom rules here
+  extends: [
+    'plugin:vue/recommended',
+    '@vue/standard',
+    '@vue/typescript/recommended',
+  ],
+  parserOptions: {
+    ecmaVersion: 2020,
+  },
+  globals: {
+    name: 'off',
+  },
   rules: {
-    // allow paren-less arrow functions
     'arrow-parens': 0,
-    // allow async-await
     'generator-star-spacing': 0,
-    // allow debugger during development
     'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
-    // trailing comma
     'comma-dangle': ['error', 'always-multiline'],
     'vue/multi-word-component-names': 'off',
+    'vue/html-closing-bracket-newline': [
+      'error',
+      {
+        singleline: 'never',
+        multiline: 'always',
+      },
+    ],
+    'no-var': ['error'],
+    '@typescript-eslint/member-delimiter-style': [
+      'error',
+      {
+        multiline: {
+          delimiter: 'none',
+        },
+        singleline: {
+          delimiter: 'comma',
+        },
+      },
+    ],
+    '@typescript-eslint/ban-ts-comment': 'warn',
+    '@typescript-eslint/no-use-before-define': 'off',
+    'no-use-before-define': 'off',
+    '@typescript-eslint/indent': ['error', 2],
+    quotes: ['error', 'single', { allowTemplateLiterals: true }],
   },
+  ignorePatterns: [
+    'node_modules/',
+    'dist/',
+    '!.*',
+  ],
 }

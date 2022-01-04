@@ -16,6 +16,7 @@
   "license": "MIT",
   "main": "dist/vue-mention.umd.js",
   "module": "dist/vue-mention.es.js",
+  "types": "dist/index.d.ts",
   "exports": {
     ".": {
       "import": "./dist/vue-mention.es.js",
@@ -24,7 +25,7 @@
   },
   "scripts": {
     "dev": "cross-env NODE_ENV=development vite build --watch",
-    "build": "cross-env NODE_ENV=production vite build",
+    "build": "cross-env NODE_ENV=production vite build && tsc -d --emitDeclarationOnly && vue-typegen gen -s src -o dist",
     "prepublishOnly": "npm run lint && npm run build && npm run test",
     "lint": "eslint --ext .ts,.js,.vue src",
     "test": "cd ../test-e2e && yarn run test:e2e:run"
@@ -70,6 +71,7 @@
     "typescript": "^4.5.4",
     "vite": "^2.7.10",
     "vue": "^3.2.26",
+    "vue-typegen": "^0.1.1",
     "v-tooltip": "^4.0.0-beta.6"
   },
   "browserslist": [

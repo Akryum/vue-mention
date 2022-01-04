@@ -25,6 +25,7 @@ export default defineConfig({
     },
   },
   define: {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
     VERSION: JSON.stringify(require('./package.json').version),
   },
 })

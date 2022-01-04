@@ -9,10 +9,13 @@
       "DOM",
       "DOM.Iterable"
     ],
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "outDir": "dist",
+    "moduleResolution": "node"
   },
   "include": [
-    "src/**/*.{ts,vue}"
+    "src/**/*.ts",
+    "src/**/*.vue"
   ],
   "exclude": [
     "node_modules",

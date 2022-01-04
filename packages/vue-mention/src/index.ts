@@ -1,15 +1,16 @@
+import { App } from 'vue'
 import Mentionable from './Mentionable.vue'
 
 export {
   Mentionable,
 }
 
-function registerComponents (app, prefix) {
+function registerComponents (app: App, prefix: string) {
   app.component(`${prefix}mentionable`, Mentionable)
   app.component(`${prefix}Mentionable`, Mentionable)
 }
 
-export function install (app, options) {
+export function install (app: App, options: string) {
   const finalOptions = Object.assign({}, {
     installComponents: true,
     componentsPrefix: '',

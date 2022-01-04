@@ -19,6 +19,26 @@ Mention popper for input and textarea
 
 [Documentation](https://vue-mention.netlify.app/)
 
+## Vue 3 support
+
+Install the v2 for Vue 3 support:
+
+```
+pnpm i vue-mention@next
+```
+
+You also need to install `v-tooltip` v4:
+
+```
+pnpm i v-tooltip@vue3
+```
+
+And add the default `v-tooltip` styles:
+
+```js
+import 'v-tooltip/dist/v-tooltip.css'
+```
+
 ## Sponsors
 
 [![sponsors logos](https://guillaume-chau.info/sponsors.png)](https://guillaume-chau.info/sponsors)

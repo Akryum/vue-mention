@@ -44,10 +44,10 @@ import 'v-tooltip/dist/v-tooltip.css'
 Install the v2 for Vue 3 support:
 
 ```
-pnpm i vue-mention@~1.0.0-vtooltip3.0
+pnpm i vue-mention@1.0.0-vtooltip3.0
 ```
 
-**:warning: Use the "patch" version range `~1.0.0-vtooltip3.0` otherwise you'll install `v1.1.0` which is for v-tooltip 2.**
+**:warning: Use the exact version range `1.0.0-vtooltip3.0` otherwise you'll install `v1.1.0` which is for v-tooltip 2.**
 
 You also need to install `v-tooltip` v3:
 

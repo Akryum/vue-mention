@@ -1,13 +1,21 @@
 <script>
 import getCaretPosition from 'textarea-caret'
-import { VPopover } from 'v-tooltip'
+import { Dropdown, options } from 'v-tooltip'
+
+options.themes.mentionable = {
+  $extend: 'dropdown',
+  placement: 'top-start',
+  modifiers: [
+    { name: 'arrow', options: { padding: 6 } },
+  ],
+}
 
 const userAgent = typeof window !== 'undefined' ? window.navigator.userAgent : ''
 const isIe = userAgent.indexOf('MSIE ') !== -1 || userAgent.indexOf('Trident/') !== -1
 
 export default {
   components: {
-    VPopover,
+    VDropdown: Dropdown,
   },
 
   inheritAttrs: false,
@@ -51,6 +59,16 @@ export default {
     limit: {
       type: Number,
       default: 8,
+    },
+
+    theme: {
+      type: String,
+      default: 'mentionable',
+    },
+
+    caretHeight: {
+      type: Number,
+      default: 0,
     },
   },
 
@@ -313,8 +331,10 @@ export default {
           this.caretPosition = getCaretPosition(this.input, this.keyIndex)
         }
         this.caretPosition.top -= this.input.scrollTop
-        if (this.$refs.popper && this.$refs.popper.popperInstance) {
-          this.$refs.popper.popperInstance.scheduleUpdate()
+        if (this.caretHeight) {
+          this.caretPosition.height = this.caretHeight
+        } else if (isNaN(this.caretPosition.height)) {
+          this.caretPosition.height = 16
         }
       }
     },
@@ -351,13 +371,14 @@ export default {
   >
     <slot />
 
-    <VPopover
+    <VDropdown
       ref="popper"
       v-bind="$attrs"
       :placement="placement"
-      :open="!!key"
-      trigger="manual"
+      :shown="!!key"
+      :triggers="[]"
       :auto-hide="false"
+      :theme="theme"
       class="popper"
       style="position:absolute;"
       :style="caretPosition ? {
@@ -371,7 +392,7 @@ export default {
         } : {}"
       />
 
-      <template #popover>
+      <template #popper>
         <div v-if="!displayedItems.length">
           <slot name="no-result">
             No result
@@ -405,6 +426,6 @@ export default {
           </div>
         </template>
       </template>
-    </VPopover>
+    </VDropdown>
   </div>
 </template>

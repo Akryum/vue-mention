@@ -2,9 +2,9 @@ describe('with default props', () => {
   it('shows suggestions', () => {
     cy.visit('/defaults')
     cy.get('.input').type('abc')
-    cy.get('.popover').should('not.exist')
+    cy.get('.v-popper__popper').should('not.exist')
     cy.get('.input').type(' @')
-    cy.get('.popover').should('be.visible')
+    cy.get('.v-popper__popper').should('be.visible')
       .should('contain', 'akryum')
       .should('contain', 'posva')
       .should('contain', 'atinux')
@@ -13,23 +13,23 @@ describe('with default props', () => {
   it('hides menu on blur', () => {
     cy.visit('/defaults')
     cy.get('.input').type('@')
-    cy.get('.popover').should('be.visible')
+    cy.get('.v-popper__popper').should('be.visible')
     cy.get('.preview').click()
-    cy.get('.popover').should('not.be.visible')
+    cy.get('.v-popper__popper').should('not.be.visible')
   })
 
   it('hides menu on space character', () => {
     cy.visit('/defaults')
     cy.get('.input').type('@')
-    cy.get('.popover').should('be.visible')
+    cy.get('.v-popper__popper').should('be.visible')
     cy.get('.input').type(' ')
-    cy.get('.popover').should('not.be.visible')
+    cy.get('.v-popper__popper').should('not.be.visible')
   })
 
   it('inserts suggestion on click', () => {
     cy.visit('/defaults')
     cy.get('.input').type('@')
-    cy.get('.popover').should('be.visible')
+    cy.get('.v-popper__popper').should('be.visible')
     cy.get('.mention-item').eq(0).click()
     cy.get('.preview').should('contain', '@akryum')
   })
@@ -37,7 +37,7 @@ describe('with default props', () => {
   it('inserts suggestion on enter', () => {
     cy.visit('/defaults')
     cy.get('.input').type('@')
-    cy.get('.popover').should('be.visible')
+    cy.get('.v-popper__popper').should('be.visible')
     cy.get('.input').type('{enter}')
     cy.get('.preview').should('contain', '@akryum')
   })
@@ -46,7 +46,7 @@ describe('with default props', () => {
   // it('insert suggestion on tab', () => {
   //   cy.visit('/defaults')
   //   cy.get('.input').type('@')
-  //   cy.get('.popover').should('be.visible')
+  //   cy.get('.v-popper__popper').should('be.visible')
   //   cy.get('.input').tab()
   //   cy.get('.preview').should('contain', '@akryum')
   // })
@@ -54,7 +54,7 @@ describe('with default props', () => {
   it('selects another suggestion with key down', () => {
     cy.visit('/defaults')
     cy.get('.input').type('@')
-    cy.get('.popover').should('be.visible')
+    cy.get('.v-popper__popper').should('be.visible')
     cy.get('.input').type('{downarrow}{downarrow}{enter}')
     cy.get('.preview').should('contain', '@atinux')
   })
@@ -62,7 +62,7 @@ describe('with default props', () => {
   it('loops key down', () => {
     cy.visit('/defaults')
     cy.get('.input').type('@')
-    cy.get('.popover').should('be.visible')
+    cy.get('.v-popper__popper').should('be.visible')
     cy.get('.input').type('{downarrow}{downarrow}{downarrow}{enter}')
     cy.get('.preview').should('contain', '@akryum')
   })
@@ -70,7 +70,7 @@ describe('with default props', () => {
   it('loops key up', () => {
     cy.visit('/defaults')
     cy.get('.input').type('@')
-    cy.get('.popover').should('be.visible')
+    cy.get('.v-popper__popper').should('be.visible')
     cy.get('.input').type('{uparrow}{enter}')
     cy.get('.preview').should('contain', '@atinux')
   })
@@ -78,7 +78,7 @@ describe('with default props', () => {
   it('searches through suggestions', () => {
     cy.visit('/defaults')
     cy.get('.input').type('@pos')
-    cy.get('.popover').should('be.visible')
+    cy.get('.v-popper__popper').should('be.visible')
     cy.get('.mention-item').should('have.length', 1)
       .should('contain', 'posva')
     cy.get('.input').type('{enter}')
@@ -88,7 +88,7 @@ describe('with default props', () => {
   it('searches with no result', () => {
     cy.visit('/defaults')
     cy.get('.input').type('@zzz')
-    cy.get('.popover').should('be.visible')
+    cy.get('.v-popper__popper').should('be.visible')
       .should('contain', 'No result')
   })
 
@@ -101,23 +101,23 @@ describe('with default props', () => {
   it('no error with special characters', () => {
     cy.visit('/defaults')
     cy.get('.input').type('@\\')
-    cy.get('.popover').should('be.visible')
+    cy.get('.v-popper__popper').should('be.visible')
       .should('contain', 'No result')
   })
 
   it('show suggestion when previous input is space', () => {
     cy.visit('/defaults')
     cy.get('.input').type(' @zzz')
-    cy.get('.popover').should('be.visible')
+    cy.get('.v-popper__popper').should('be.visible')
     cy.get('.input').type('　@zzz')
-    cy.get('.popover').should('be.visible')
+    cy.get('.v-popper__popper').should('be.visible')
     cy.get('.input').type('\n@zzz')
-    cy.get('.popover').should('be.visible')
+    cy.get('.v-popper__popper').should('be.visible')
   })
 
   it('does not show suggestion when text is email address', () => {
     cy.visit('/defaults')
     cy.get('.input').type('aaa@zzz.com')
-    cy.get('.popover').should('not.exist')
+    cy.get('.v-popper__popper').should('not.exist')
   })
 })

@@ -39,6 +39,26 @@ And add the default `v-tooltip` styles:
 import 'v-tooltip/dist/v-tooltip.css'
 ```
 
+## v-tooltip 3 (Vue 2)
+
+Install the v2 for Vue 3 support:
+
+```
+pnpm i vue-mention@~1.0.0-vtooltip3.0
+```
+
+You also need to install `v-tooltip` v3:
+
+```
+pnpm i v-tooltip@next
+```
+
+And add the default `v-tooltip` styles:
+
+```js
+import 'v-tooltip/dist/v-tooltip.css'
+```
+
 ## Sponsors
 
 [![sponsors logos](https://guillaume-chau.info/sponsors.png)](https://guillaume-chau.info/sponsors)

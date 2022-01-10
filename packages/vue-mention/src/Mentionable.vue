@@ -376,6 +376,7 @@ export default defineComponent({
   <div
     ref="el"
     class="mentionable"
+    :class="$attrs.class"
     style="position:relative;"
   >
     <slot />
@@ -401,40 +402,38 @@ export default defineComponent({
       />
 
       <template #popper>
-        <div :class="$attrs.class">
-          <div v-if="!displayedItems.length">
-            <slot name="no-result">
-              No result
-            </slot>
-          </div>
+        <div v-if="!displayedItems.length">
+          <slot name="no-result">
+            No result
+          </slot>
+        </div>
 
-          <template v-else>
-            <div
-              v-for="(item, index) of displayedItems"
-              :key="index"
-              class="mention-item"
-              :class="{
-                'mention-selected': selectedIndex === index,
-              }"
-              @mouseover="selectedIndex = index"
-              @mousedown="applyMention(index)"
+        <template v-else>
+          <div
+            v-for="(item, index) of displayedItems"
+            :key="index"
+            class="mention-item"
+            :class="{
+              'mention-selected': selectedIndex === index,
+            }"
+            @mouseover="selectedIndex = index"
+            @mousedown="applyMention(index)"
+          >
+            <slot
+              :name="`item-${currentKey || oldKey}`"
+              :item="item"
+              :index="index"
             >
               <slot
-                :name="`item-${currentKey || oldKey}`"
+                name="item"
                 :item="item"
                 :index="index"
               >
-                <slot
-                  name="item"
-                  :item="item"
-                  :index="index"
-                >
-                  {{ item.label || item.value }}
-                </slot>
+                {{ item.label || item.value }}
               </slot>
-            </div>
-          </template>
-        </div>
+            </slot>
+          </div>
+        </template>
       </template>
     </VDropdown>
   </div>

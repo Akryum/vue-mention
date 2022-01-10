@@ -13149,10 +13149,10 @@ v-tooltip@^2.0.3:
     popper.js "^1.16.1"
     vue-resize "^1.0.1"
 
-v-tooltip@^4.0.0-beta.6:
-  version "4.0.0-beta.6"
-  resolved "https://registry.yarnpkg.com/v-tooltip/-/v-tooltip-4.0.0-beta.6.tgz#4bd1670844c86111974e3012c44cc9355893770a"
-  integrity sha512-LR5IUOTgLX5vt7FNOIvmSvmnRVWUrFacBPDq0W4ZuVmQULqoZJchnzRBPGc12Jf/AWlffZLn0t4mVSfSFp5OLw==
+v-tooltip@^4.0.0-beta.14:
+  version "4.0.0-beta.14"
+  resolved "https://registry.yarnpkg.com/v-tooltip/-/v-tooltip-4.0.0-beta.14.tgz#98a92c7fc71362222bc9946140433df0d16169b6"
+  integrity sha512-bJHoQJGCuJxcptQdwT/hehcUY2MWaiKatuwSrTk3sPY571KEXWCaF8sPk1md8HDF1EW8SIb5y38sIFEQa8ysFA==
   dependencies:
     "@popperjs/core" "^2.11.0"
     vue-resize "^2.0.0-alpha.1"
@@ -13263,6 +13263,13 @@ vue-loader@^15.7.1, vue-loader@^15.9.2:
     loader-utils "^1.1.0"
     vue-hot-reload-api "^2.3.0"
     vue-style-loader "^4.1.0"
+
+vue-mention@^1.0.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/vue-mention/-/vue-mention-1.1.0.tgz#5f3871fb133e5c881a2f4af71cbfe74d23cf45ab"
+  integrity sha512-yuFewv8i70qIL5HWdi9UHdwXAxeis1RR/FN00GQ0P7LJeqkh8YD9CWIjnD2owO1yLjgFol7t9uvax3rsl+oigg==
+  dependencies:
+    textarea-caret "^3.1.0"
 
 vue-resize@^1.0.1:
   version "1.0.1"

@@ -6,7 +6,9 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "lerna run build"
+    "build": "lerna run build",
+    "lint": "lerna run lint",
+    "release": "yarn run lint && lerna publish --dist-tag next"
   },
   "devDependencies": {
     "lerna": "^3.20.2"

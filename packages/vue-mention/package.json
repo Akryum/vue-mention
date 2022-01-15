@@ -46,7 +46,7 @@
     "textarea-caret": "^3.1.0"
   },
   "peerDependencies": {
-    "v-tooltip": "^4.0.0-beta.14",
+    "floating-vue": "^2.0.0-beta.1",
     "vue": "^3.2"
   },
   "devDependencies": {
@@ -72,7 +72,7 @@
     "vite": "^2.7.10",
     "vue": "^3.2.26",
     "vue-typegen": "^0.1.1",
-    "v-tooltip": "^4.0.0-beta.14"
+    "floating-vue": "^2.0.0-beta.1"
   },
   "browserslist": [
     "> 1%",

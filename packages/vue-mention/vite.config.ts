@@ -14,12 +14,12 @@ export default defineConfig({
     rollupOptions: {
       external: [
         'vue',
-        'v-tooltip',
+        'floating-vue',
       ],
       output: {
         globals: {
           vue: 'Vue',
-          'v-tooltip': 'VTooltip',
+          'floating-vue': 'FloatingVue',
         },
       },
     },

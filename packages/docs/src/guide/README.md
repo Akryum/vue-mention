@@ -2,7 +2,7 @@
 
 ## Installation
 
-vue-mention requires [v-tooltip](https://github.com/Akryum/v-tooltip).
+vue-mention requires [floating-vue](https://floating-vue.starpad.dev).
 
 Install the `vue-mention` package:
 

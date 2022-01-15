@@ -1,13 +1,12 @@
 <script>
 import getCaretPosition from 'textarea-caret'
-import { Dropdown, options } from 'v-tooltip'
+import { Dropdown, options } from 'floating-vue'
 
 options.themes.mentionable = {
   $extend: 'dropdown',
   placement: 'top-start',
-  modifiers: [
-    { name: 'arrow', options: { padding: 6 } },
-  ],
+  arrowPadding: 6,
+  arrowOverflow: false,
 }
 
 const userAgent = typeof window !== 'undefined' ? window.navigator.userAgent : ''

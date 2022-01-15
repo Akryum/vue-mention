@@ -12,8 +12,8 @@
   "dependencies": {
     "core-js": "^3.6.4",
     "vue": "^2.6.11",
-    "v-tooltip": "^3.0.0-beta.13",
-    "vue-mention": "~1.0.0-vtooltip3.0",
+    "floating-vue": "^1.0.0-beta.3",
+    "vue-mention": "1.0.0-floating-vue1",
     "vue-router": "^3.1.6"
   },
   "devDependencies": {

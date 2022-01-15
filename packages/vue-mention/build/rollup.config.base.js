@@ -44,6 +44,6 @@ export default {
   },
   external: [
     'vue',
-    'v-tooltip',
+    'floating-vue',
   ],
 }

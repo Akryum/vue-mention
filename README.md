@@ -39,26 +39,26 @@ And add the default `v-tooltip` styles:
 import 'v-tooltip/dist/v-tooltip.css'
 ```
 
-## v-tooltip 3 (Vue 2)
+## floating-vue 1 (Vue 2)
 
-Install the v2 for Vue 3 support:
-
-```
-pnpm i vue-mention@1.0.0-vtooltip3.0
-```
-
-**:warning: Use the exact version range `1.0.0-vtooltip3.0` otherwise you'll install `v1.1.0` which is for v-tooltip 2.**
-
-You also need to install `v-tooltip` v3:
+Install the special version for floating-vue v1 (for Vue 2) support:
 
 ```
-pnpm i v-tooltip@next
+pnpm i vue-mention@1.0.0-floating-vue1
 ```
 
-And add the default `v-tooltip` styles:
+**:warning: Use the exact version range `1.0.0-floating-vue1` otherwise you'll install `v1.1.0` which is for v-tooltip 2.**
+
+You also need to install `floating-vue` v1:
+
+```
+pnpm i floating-vue@vue2
+```
+
+And add the default `floating-vue` styles:
 
 ```js
-import 'v-tooltip/dist/v-tooltip.css'
+import 'floating-vue/dist/style.css'
 ```
 
 ## Sponsors

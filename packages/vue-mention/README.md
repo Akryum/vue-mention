@@ -6,6 +6,12 @@ Mention popper for input and textarea
 
 [Documentation](https://vue-mention.netlify.app/)
 
+<p align="center">
+  <a href="https://guillaume-chau.info/sponsors/" target="_blank">
+    <img src='https://akryum.netlify.app/sponsors.svg'/>
+  </a>
+</p>
+
 ## Quick start
 
 ```vue

@@ -1,5 +1,11 @@
 # Getting Started
 
+<p align="center">
+  <a href="https://guillaume-chau.info/sponsors/" target="_blank">
+    <img src='https://akryum.netlify.app/sponsors.svg'/>
+  </a>
+</p>
+
 ## Installation
 
 vue-mention requires [v-tooltip](https://github.com/Akryum/v-tooltip).

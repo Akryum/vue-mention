@@ -27,16 +27,16 @@ Install the v2 for Vue 3 support:
 pnpm i vue-mention@next
 ```
 
-You also need to install `v-tooltip` v4:
+You also need to install `floating-vue`:
 
 ```
-pnpm i v-tooltip@vue3
+pnpm i floating-vue
 ```
 
-And add the default `v-tooltip` styles:
+And add the default `floating-vue` styles:
 
 ```js
-import 'v-tooltip/dist/v-tooltip.css'
+import 'floating-vue/dist/style.css'
 ```
 
 ## floating-vue 1 (Vue 2)

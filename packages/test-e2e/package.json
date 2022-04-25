@@ -1,6 +1,6 @@
 {
   "name": "test-e2e",
-  "version": "2.0.0-alpha.3",
+  "version": "2.0.0-alpha.4",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -13,7 +13,7 @@
     "core-js": "^3.6.4",
     "floating-vue": "^2.0.0-beta.1",
     "vue": "^3.2.26",
-    "vue-mention": "^2.0.0-alpha.1",
+    "vue-mention": "^2.0.0-alpha.4",
     "vue-router": "^4.0.12"
   },
   "devDependencies": {

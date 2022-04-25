@@ -45,6 +45,10 @@ const routes = [
     path: '/content-editable',
     component: () => import('./views/ContentEditable.vue'),
   },
+  {
+    path: '/allow-space',
+    component: () => import('./views/AllowSpace.vue'),
+  },
 ]
 
 const router = createRouter({

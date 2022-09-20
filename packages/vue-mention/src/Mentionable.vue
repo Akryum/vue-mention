@@ -401,7 +401,7 @@ export default defineComponent({
       />
 
       <template #popper>
-        <div v-if="!displayedItems.length">
+        <div v-if="!displayedItems.length" class="no-result">
           <slot name="no-result">
             No result
           </slot>
